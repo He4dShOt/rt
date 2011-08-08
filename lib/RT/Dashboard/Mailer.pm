@@ -476,7 +476,9 @@ sub BuildEmail {
 }
 
 sub GetResource {
-    my $uri = URI->new(shift);
+    my $string = shift;
+    Encode::_utf8_off($string);
+    my $uri = URI->new($string);
     my ($content, $filename, $mimetype, $encoding);
 
     $RT::Logger->debug("Getting resource $uri");

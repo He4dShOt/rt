@@ -3,7 +3,7 @@ use warnings;
 
 use RT::Test tests => 19;
 use RT::Dashboard::Mailer;
-use Encode;
+use utf8;
 
 my $root = RT::Test->load_or_create_user( Name => 'root' );
 
@@ -12,7 +12,7 @@ ok( $m->login, 'logged in' );
 
 RT::Test->create_ticket(
     Queue   => 'General',
-    Subject => decode_utf8('test äöü'),
+    Subject => 'test äöü',
 );
 
 $m->get_ok(q{/Search/Chart.html?Query=Subject LIKE 'test äöü'});

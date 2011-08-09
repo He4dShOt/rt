@@ -15,8 +15,6 @@ RT::Test->create_ticket(
     Subject => decode_utf8('test äöü'),
 );
 
-my $query = "Subject LIKE 'test äöü'";
-
 $m->get_ok(q{/Search/Chart.html?Query=Subject LIKE 'test äöü'});
 $m->submit_form(
     form_name => 'SaveSearch',
@@ -65,7 +63,6 @@ is @mails, 1, "got a dashboard mail";
 # before we can call bodyhandle :/
 use RT::EmailParser;
 my $parser = RT::EmailParser->new;
-$parser->ParseMIMEEntityFromScalar( $mails[0] );
 my $mail = $parser->ParseMIMEEntityFromScalar( $mails[0] );
 like(
     $mail->head->get('Subject'),

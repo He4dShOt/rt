@@ -423,7 +423,7 @@ sub get_from {
 }
 
 sub get_resource {
-    my $uri = URI->new(shift);
+    my $uri = URI->new(Encode::encode_utf8(shift));
     my ($content, $filename, $mimetype, $encoding);
 
     verbose "Getting resource [_1]", $uri;

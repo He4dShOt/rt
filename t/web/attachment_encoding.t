@@ -17,7 +17,6 @@ diag 'test without attachments' if $ENV{TEST_VERBOSE};
 {
     $m->get_ok( $baseurl . '/Ticket/Create.html?Queue=1' );
 
-    $m->form_name('TicketModify');
     $m->submit_form(
         form_number => 3,
         fields      => { Subject => '标题', Content => '测试' },
@@ -42,10 +41,12 @@ diag 'test without attachments' if $ENV{TEST_VERBOSE};
 
 diag 'test with attachemnts' if $ENV{TEST_VERBOSE};
 
-{
+use File::Temp 'tempdir';
+my $tmpdir = tempdir( DIR => $RT::VarPath, CLEANUP => 1 );
 
+{
     my $file =
-      File::Spec->catfile( File::Spec->tmpdir, encode_utf8 '附件.txt' );
+      File::Spec->catfile( $tmpdir, encode_utf8 '附件.txt' );
     open( my $fh, '>', $file ) or die $!;
     binmode $fh, ':utf8';
     print $fh '附件';
@@ -53,7 +54,6 @@ diag 'test with attachemnts' if $ENV{TEST_VERBOSE};
 
     $m->get_ok( $baseurl . '/Ticket/Create.html?Queue=1' );
 
-    $m->form_name('TicketModify');
     $m->submit_form(
         form_number => 3,
         fields => { Subject => '标题', Content => '测试', Attach => $file },

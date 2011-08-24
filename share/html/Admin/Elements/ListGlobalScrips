@@ -62,6 +62,7 @@
 
 <%init>
 my $Format = RT->Config->Get('AdminSearchResultFormat')->{'Scrips'};
+$Format =~ s!__WebRequestPathDir__!Admin/Global!g;
 
 my $Scrips = RT::Scrips->new( $session{'CurrentUser'} );
 $Scrips->LimitToGlobal;
